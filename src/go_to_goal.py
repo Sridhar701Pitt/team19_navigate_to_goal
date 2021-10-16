@@ -22,6 +22,29 @@ current_obstacle_vector = np.empty((1,2))
 ###################################
 ## Function Declaration
 ###################################
+def goal_arrow_data(obstacle_vec_x, osbtacle_vec_y):
+
+    obstacle_marker = Marker()
+    obstacle_marker.action = Marker.ADD
+    obstacle_marker.header.frame_id = '/base_scan'
+    obstacle_marker.header.stamp = rospy.Time.now()
+    obstacle_marker.ns = 'points_arrows'
+    obstacle_marker.id = 11311
+    obstacle_marker.type = Marker.ARROW
+    obstacle_marker.pose.orientation.y = 0
+    obstacle_marker.pose.orientation.w = 1
+    obstacle_marker.scale = Vector3(0.1, 0.1, 0.1)
+    obstacle_marker.color.r = 0.2
+    obstacle_marker.color.g = 0.5
+    obstacle_marker.color.b = 1.0
+    obstacle_marker.color.a = 0.3
+
+    obstacle_marker.points = [ Point(0, 0, 0), Point(obstacle_vec_x, osbtacle_vec_y, 0) ]
+    return obstacle_marker
+
+
+
+
 def calc_optimal_vel(obstacle_vector):
 
     global current_obstacle_vector

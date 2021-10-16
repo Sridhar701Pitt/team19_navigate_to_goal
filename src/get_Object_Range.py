@@ -19,6 +19,8 @@ angles_array = angles_array * np.pi / 180.0                    # Convert values 
 cos_angles_array = np.cos(angles_array)         # Required to get x components of the obstacle vectors
 sin_angles_array = np.sin(angles_array)         # Required to get y components of the obstacle vectors
 
+k_radial_factor = 9.21
+
 ###################################
 ## Function Declaration
 ###################################
@@ -46,7 +48,10 @@ def obstacle_arrow_data(obstacle_vec_x, osbtacle_vec_y):
 def compute_object_arrow(laser_scan_object):
     scan_object_ranges = np.asarray(laser_scan_object.ranges)
     scan_dist_threshold = np.where(scan_object_ranges > max_dist_threshold, 0, scan_object_ranges)
-    
+
+    scan_dist_threshold = scan_dist_threshold * -1 * k_radial_factor
+    scan_dist_threshold = np.exp(scan_dist_threshold)
+
     obstacle_vec_x = -1 * np.dot(scan_dist_threshold, cos_angles_array)
     obstacle_vec_y = -1 * np.dot(scan_dist_threshold, sin_angles_array)
 
