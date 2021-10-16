@@ -26,7 +26,7 @@ def goal_arrow_data(goal_vector):
 
     goal_marker = Marker()
     goal_marker.action = Marker.ADD
-    goal_marker.header.frame_id = '/base_goal_vector'
+    goal_marker.header.frame_id = '/base_scan'
     goal_marker.header.stamp = rospy.Time.now()
     goal_marker.ns = 'points_arrows'
     goal_marker.id = 131
@@ -48,7 +48,7 @@ def resultant_arrow_data(resultant_vector):
 
     resultant_marker = Marker()
     resultant_marker.action = Marker.ADD
-    resultant_marker.header.frame_id = '/base_resultant_vector'
+    resultant_marker.header.frame_id = '/base_scan'
     resultant_marker.header.stamp = rospy.Time.now()
     resultant_marker.ns = 'points_arrows'
     resultant_marker.id = 111
