@@ -2,7 +2,7 @@
 #Convert object location and LIDAR scan to range and angular values of the detected object
 
 import rospy
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Point, Vector3
 from sensor_msgs.msg import LaserScan
 import numpy as np
 import math
@@ -33,7 +33,7 @@ def obstacle_arrow_data(obstacle_vec_x, osbtacle_vec_y):
     obstacle_marker.type = Marker.ARROW
     obstacle_marker.pose.orientation.y = 0
     obstacle_marker.pose.orientation.w = 1
-    # obstacle_marker.scale = scale
+    obstacle_marker.scale = Vector3(1, 1, 1)
     obstacle_marker.color.r = 0.2
     obstacle_marker.color.g = 0.5
     obstacle_marker.color.b = 1.0
