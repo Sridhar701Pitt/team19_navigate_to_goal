@@ -22,7 +22,7 @@ current_obstacle_vector = np.empty((1,2))
 ###################################
 ## Function Declaration
 ###################################
-def goal_arrow_data(goal_vector)):
+def goal_arrow_data(goal_vector):
 
     goal_vector = Marker()
     goal_vector.action = Marker.ADD
@@ -44,7 +44,7 @@ def goal_arrow_data(goal_vector)):
     pub_goal_vector.publish(goal_vector)
 
 
-def resultant_arrow_data(resultant_vector)):
+def resultant_arrow_data(resultant_vector):
 
     resultant_vector = Marker()
     resultant_vector.action = Marker.ADD
