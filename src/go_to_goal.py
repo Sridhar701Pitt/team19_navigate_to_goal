@@ -116,7 +116,7 @@ def Init():
     # Subscribe to /odom
     rospy.Subscriber("/odom", Odometry, get_odom_data, queue_size=1)
 
-    while goal_state < 4:
+    while goal_state < 4 and not rospy.is_shutdown():
         go_to_goal(checkpoints[goal_state])
         rospy.sleep(0.25)
 
