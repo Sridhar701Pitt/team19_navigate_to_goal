@@ -26,15 +26,17 @@ def calc_optimal_vel(obstacle_vector):
 
     global current_obstacle_vector
 
-    current_obstacle_vector = obstacle_vector.points[1]
+    current_obstacle_vector[0] = obstacle_vector.points[1].x
+    current_obstacle_vector[1] = obstacle_vector.points[1].y
+
     
 
 def get_odom_data(odom_data):
 
     global current_pose
     
-    current_pose[0] = odom_data.pose.pose.x
-    current_pose[1] = odom_data.pose.pose.y
+    current_pose[0] = odom.pose.pose.position.x
+    current_pose[1] = odom.pose.pose.position.y 
 
 
 def get_checkpoints():
