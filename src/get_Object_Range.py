@@ -33,7 +33,7 @@ def obstacle_arrow_data(obstacle_vec_x, osbtacle_vec_y):
     obstacle_marker.type = Marker.ARROW
     obstacle_marker.pose.orientation.y = 0
     obstacle_marker.pose.orientation.w = 1
-    obstacle_marker.scale = Vector3(1, 1, 1)
+    obstacle_marker.scale = Vector3(0.1, 0.1, 0.1)
     obstacle_marker.color.r = 0.2
     obstacle_marker.color.g = 0.5
     obstacle_marker.color.b = 1.0
@@ -54,7 +54,7 @@ def compute_object_arrow(laser_scan_object):
     
     obstacle_vec_theta = obstacle_vec_y / obstacle_vec_y
     
-    obstacle_arrow = obstacle_arrow_data(obstacle_vec_x, obstacle_vec_y)
+    obstacle_arrow = obstacle_arrow_data(-1 * obstacle_vec_x, -1 * obstacle_vec_y)
 
     #obstacle_vector_tip = Point(obstacle_vec_x, obstacle_vec_y, 0)
     #print(obstacle_vector_tip)
