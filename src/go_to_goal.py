@@ -117,7 +117,7 @@ def go_to_goal(current_goal_state):
     
     else:
     
-        current_goal_vector = k_goal_factor * (current_goal_vector / np.linalg.norm(current_goal_vector))
+        current_goal_vector = k_goal_factor * (current_goal_vector_unnorm / np.linalg.norm(current_goal_vector_unnorm))
 
         goal_arrow_data(current_goal_vector)
 
