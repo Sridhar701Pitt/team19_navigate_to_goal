@@ -89,7 +89,7 @@ def go_to_goal(current_goal_state):
     print(twist)
     pub.publish(twist)
 
-    if np.abs(current_goal_vector) < 0.5:
+    if np.linalg.norm(current_goal_vector) < 0.5:
         goal_state += 1
         pub.publish(Twist())
         rospy.sleep(10)
