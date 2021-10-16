@@ -56,11 +56,12 @@ def compute_object_arrow(laser_scan_object):
     
     obstacle_arrow = obstacle_arrow_data(obstacle_vec_x, obstacle_vec_y)
 
-    obstacle_vector_tip = Point(obstacle_vec_x, obstacle_vec_y, 0)
-    print(obstacle_vector_tip)
-    pub.publish(obstacle_vector_tip)
-    #print(obstacle_arrow)
-    #pub.publish(obstacle_arrow)
+    #obstacle_vector_tip = Point(obstacle_vec_x, obstacle_vec_y, 0)
+    #print(obstacle_vector_tip)
+    #pub.publish(obstacle_vector_tip)
+    
+    print(obstacle_arrow)
+    pub.publish(obstacle_arrow)
 
 
 
@@ -73,7 +74,7 @@ def Init():
 	rospy.Subscriber("/scan", LaserScan, compute_object_arrow, queue_size=1)
 
 	# Publish angle and distance
-	pub = rospy.Publisher("/obstacle_vector", Point, queue_size=10)
+	pub = rospy.Publisher("/obstacle_vector", Marker, queue_size=10)
 
 	rospy.spin()
 
