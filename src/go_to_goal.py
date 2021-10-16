@@ -34,9 +34,9 @@ def goal_arrow_data(goal_vector):
     goal_marker.pose.orientation.y = 0
     goal_marker.pose.orientation.w = 1
     goal_marker.scale = Vector3(0.1, 0.1, 0.1)
-    goal_marker.color.r = 0.2
+    goal_marker.color.r = 1.0
     goal_marker.color.g = 0.5
-    goal_marker.color.b = 1.0
+    goal_marker.color.b = 0.2
     goal_marker.color.a = 0.3
 
     goal_marker.points = [ Point(0, 0, 0), Point(goal_vector[0][0], goal_vector[0][1], 0) ]
@@ -57,8 +57,8 @@ def resultant_arrow_data(resultant_vector):
     resultant_marker.pose.orientation.w = 1
     resultant_marker.scale = Vector3(0.1, 0.1, 0.1)
     resultant_marker.color.r = 0.2
-    resultant_marker.color.g = 0.5
-    resultant_marker.color.b = 1.0
+    resultant_marker.color.g = 1.0
+    resultant_marker.color.b = 0.5
     resultant_marker.color.a = 0.3
 
     resultant_marker.points = [ Point(0, 0, 0), Point(resultant_vector[0][0], resultant_vector[0][1], 0) ]
