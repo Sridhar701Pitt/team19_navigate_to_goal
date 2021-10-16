@@ -35,8 +35,8 @@ def get_odom_data(odom_data):
 
     global current_pose
     
-    current_pose[0] = odom.pose.pose.position.x
-    current_pose[1] = odom.pose.pose.position.y 
+    current_pose[0] = odom_data.pose.pose.position.x
+    current_pose[1] = odom_data.pose.pose.position.y 
 
 
 def get_checkpoints():
