@@ -106,51 +106,55 @@ def go_to_goal(current_goal_state):
 
     current_goal = checkpoints[goal_state]
 
-    current_goal_vector = current_goal - current_pose
+    current_goal_vector_unnorm = current_goal - current_pose
 
-    current_goal_vector = k_goal_factor * (current_goal_vector / np.linalg.norm(current_goal_vector))
-
-    goal_arrow_data(current_goal_vector)
-
-    resultant_vector = current_goal_vector + current_obstacle_vector
-
-    resultant_arrow_data(resultant_vector)
-
-    # transformation to v,w
-    l_mat = np.array([[1, 0],
-             [0, 1/l]])
-    rot_mat = np.array([[np.cos(-theta), -np.sin(-theta)],
-               [np.sin(-theta), np.cos(theta)]])
-
-    vw_vector = np.matmul(np.matmul(l_mat, rot_mat), np.transpose(resultant_vector))
-    rospy.loginfo('vw_vector is ${0}'.format(vw_vector))
-
-    #robot maximum velocity limits
-    robot_max_linearx = 0.15
-    robot_max_rotz = 1.8
-
-    #If the calculated velocities exceed the maximum velocity limits, normalize and scale the vw_vector to the limit.
-    if np.abs(vw_vector[0]) > robot_max_linearx:
-        temp = vw_vector / np.linalg.norm(vw_vector)
-        vw_vector = (robot_max_linearx/np.abs(temp[0])) * temp
-
-    if np.abs(vw_vector[1]) > robot_max_rotz:
-        temp = vw_vector / np.linalg.norm(vw_vector)
-        vw_vector = (robot_max_rotz/np.abs(temp[1])) * temp
-
-    twist = Twist()
-    twist.linear.x = vw_vector[0]
-    twist.angular.z = vw_vector[1]
-
-    print("Published Twist Message: ", twist)
-    pub.publish(twist)
-
-    if np.linalg.norm(current_goal_vector) < 0.5:
+    if np.linalg.norm(current_goal_vector_unnorm) < 0.1:
+        
         goal_state += 1
         pub.publish(Twist())
         rospy.sleep(10)
         print("Current Goal State: ", goal_state)
+    
+    else:
+    
+        current_goal_vector = k_goal_factor * (current_goal_vector / np.linalg.norm(current_goal_vector))
 
+        goal_arrow_data(current_goal_vector)
+
+        resultant_vector = current_goal_vector + current_obstacle_vector
+
+        resultant_arrow_data(resultant_vector)
+
+        # transformation to v,w
+        l_mat = np.array([[1, 0],
+                [0, 1/l]])
+        rot_mat = np.array([[np.cos(-theta), -np.sin(-theta)],
+                [np.sin(-theta), np.cos(theta)]])
+
+        vw_vector = np.matmul(np.matmul(l_mat, rot_mat), np.transpose(resultant_vector))
+        rospy.loginfo('vw_vector is ${0}'.format(vw_vector))
+
+        #robot maximum velocity limits
+        robot_max_linearx = 0.15
+        robot_max_rotz = 1.8
+
+        #If the calculated velocities exceed the maximum velocity limits, normalize and scale the vw_vector to the limit.
+        if np.abs(vw_vector[0]) > robot_max_linearx:
+            temp = vw_vector / np.linalg.norm(vw_vector)
+            vw_vector = (robot_max_linearx/np.abs(temp[0])) * temp
+
+        if np.abs(vw_vector[1]) > robot_max_rotz:
+            temp = vw_vector / np.linalg.norm(vw_vector)
+            vw_vector = (robot_max_rotz/np.abs(temp[1])) * temp
+
+        twist = Twist()
+        twist.linear.x = vw_vector[0]
+        twist.angular.z = vw_vector[1]
+
+        print("Published Twist Message: ", twist)
+        pub.publish(twist)
+        print("Current Goal State: ", goal_state)
+    
 
 def Init():
     global pub, goal_state, pub_goal_vector, pub_resultant_vector
