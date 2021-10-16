@@ -13,13 +13,6 @@ from visualization_msgs.msg import Marker
 ## VARIABLE DECLARATION AND SETUP
 ###################################
 
-max_dist_threshold = 1.0                        # Segment out obstacles that are detected beyond 2 m as they create unnecessary computations for the planner
-
-angles_array = np.arange(0,360)                 # Create the array with angles at each index for conversion from polar to cartesian (obstacle vectors)
-angles_array = angles_array * np.pi / 180.0                    # Convert values to radian
-cos_angles_array = np.cos(angles_array)         # Required to get x components of the obstacle vectors
-sin_angles_array = np.sin(angles_array)         # Required to get y components of the obstacle vectors
-
 l = 0.15
 theta = 0
 
@@ -38,7 +31,9 @@ def get_odom_data(odom_data):
 
     global current_pose
     
-    current_pose = odom_data.pose.pose
+    current_pose = np.empty((1,2))
+    current_pose[0] = odom_data.pose.pose.x
+    current_pose[1] = odom_data.pose.pose.y
 
 
 def get_checkpoints():
