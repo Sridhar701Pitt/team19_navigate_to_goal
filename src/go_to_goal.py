@@ -66,7 +66,7 @@ def go_to_goal(current_goal_state):
     rot_mat = np.array([[np.cos(-theta), -np.sin(-theta)],
                [np.sin(-theta), np.cos(theta)]])
 
-    vw_vector = np.matmul(np.matmul(l_mat, rot_mat), resultant_vector)
+    vw_vector = np.matmul(np.matmul(l_mat, rot_mat), np.transpose(resultant_vector))
     rospy.loginfo('vw_vector is ${0}'.format(vw_vector))
 
     #robot maximum velocity limits
