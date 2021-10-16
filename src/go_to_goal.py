@@ -2,7 +2,7 @@
 #Convert object location and LIDAR scan to range and angular values of the detected object
 
 import rospy
-from geometry_msgs.msg import Point, Vector3
+from geometry_msgs.msg import Point, Vector3, Twist
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import Odometry
 import numpy as np
@@ -23,6 +23,7 @@ sin_angles_array = np.sin(angles_array)         # Required to get y components o
 l = 0.15
 theta = 0
 
+current_pose = Point(0,0,0)
 ###################################
 ## Function Declaration
 ###################################
@@ -40,24 +41,24 @@ def get_odom_data(odom_data):
     current_pose = odom_data.pose.pose
 
 
-def get_checkpoints()
+def get_checkpoints():
 
-    global coordinates 
+    global checkpoints 
 
-    coordinates = np.empty((3,2))
+    checkpoints = np.empty((3,2))
 
     with open('./wayPoints.txt', 'r') as infile:
         data = infile.readlines()
         for i, waypoint in enumerate(data):
-            coordinates[i] = waypoint.split()
+            checkpoints[i] = waypoint.split()
 
-    print(coordinates) 
+    print(checkpoints) 
 
 
-def go_to_goal(current_goal_state)
+def go_to_goal(current_goal_state):
     global goal_state 
 
-    current_goal = checkpoints[current_goal_state]
+    current_goal = checkpoints[goal_state]
 
     current_goal_vector = current_goal - current_pose
 
