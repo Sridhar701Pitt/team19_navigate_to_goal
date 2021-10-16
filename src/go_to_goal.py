@@ -118,6 +118,7 @@ def Init():
 
     while goal_state < 4:
         go_to_goal(checkpoints[goal_state])
+        rospy.sleep(0.25)
 
     rospy.spin()
 
