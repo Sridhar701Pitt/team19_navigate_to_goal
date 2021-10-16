@@ -60,7 +60,7 @@ def compute_object_arrow(laser_scan_object):
 
     print("obstacle_x : ", obstacle_vec_x, "     obstacle y : ", obstacle_vec_y)
     
-    obstacle_arrow = obstacle_arrow_data(vec_x, vec_y)
+    obstacle_arrow = obstacle_arrow_data(obstacle_vec_x, obstacle_vec_y)
 
     
     print(obstacle_arrow)
