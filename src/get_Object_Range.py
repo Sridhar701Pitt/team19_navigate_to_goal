@@ -54,7 +54,7 @@ def compute_object_arrow(laser_scan_object):
     
     # obstacle_vec_theta = obstacle_vec_y / obstacle_vec_x
     
-    obstacle_arrow = obstacle_arrow_data(bstacle_vec_x, obstacle_vec_y)
+    obstacle_arrow = obstacle_arrow_data(obstacle_vec_x, obstacle_vec_y)
 
     #obstacle_vector_tip = Point(obstacle_vec_x, obstacle_vec_y, 0)
     #print(obstacle_vector_tip)
