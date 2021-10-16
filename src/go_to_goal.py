@@ -22,27 +22,48 @@ current_obstacle_vector = np.empty((1,2))
 ###################################
 ## Function Declaration
 ###################################
-def goal_arrow_data(obstacle_vec_x, osbtacle_vec_y):
+def goal_arrow_data(goal_vector)):
 
-    obstacle_marker = Marker()
-    obstacle_marker.action = Marker.ADD
-    obstacle_marker.header.frame_id = '/base_scan'
-    obstacle_marker.header.stamp = rospy.Time.now()
-    obstacle_marker.ns = 'points_arrows'
-    obstacle_marker.id = 11311
-    obstacle_marker.type = Marker.ARROW
-    obstacle_marker.pose.orientation.y = 0
-    obstacle_marker.pose.orientation.w = 1
-    obstacle_marker.scale = Vector3(0.1, 0.1, 0.1)
-    obstacle_marker.color.r = 0.2
-    obstacle_marker.color.g = 0.5
-    obstacle_marker.color.b = 1.0
-    obstacle_marker.color.a = 0.3
+    goal_vector = Marker()
+    goal_vector.action = Marker.ADD
+    goal_vector.header.frame_id = '/base_goal_vector'
+    goal_vector.header.stamp = rospy.Time.now()
+    goal_vector.ns = 'points_arrows'
+    goal_vector.id = 131
+    goal_vector.type = Marker.ARROW
+    goal_vector.pose.orientation.y = 0
+    goal_vector.pose.orientation.w = 1
+    goal_vector.scale = Vector3(0.1, 0.1, 0.1)
+    goal_vector.color.r = 0.2
+    goal_vector.color.g = 0.5
+    goal_vector.color.b = 1.0
+    goal_vector.color.a = 0.3
 
-    obstacle_marker.points = [ Point(0, 0, 0), Point(obstacle_vec_x, osbtacle_vec_y, 0) ]
-    return obstacle_marker
+    goal_vector.points = [ Point(0, 0, 0), Point(goal_vector[0][0], goal_vector[0][1], 0) ]
+    
+    pub_goal_vector.publish(goal_vector)
 
 
+def resultant_arrow_data(resultant_vector)):
+
+    resultant_vector = Marker()
+    resultant_vector.action = Marker.ADD
+    resultant_vector.header.frame_id = '/base_resultant_vector'
+    resultant_vector.header.stamp = rospy.Time.now()
+    resultant_vector.ns = 'points_arrows'
+    resultant_vector.id = 111
+    resultant_vector.type = Marker.ARROW
+    resultant_vector.pose.orientation.y = 0
+    resultant_vector.pose.orientation.w = 1
+    resultant_vector.scale = Vector3(0.1, 0.1, 0.1)
+    resultant_vector.color.r = 0.2
+    resultant_vector.color.g = 0.5
+    resultant_vector.color.b = 1.0
+    resultant_vector.color.a = 0.3
+
+    resultant_vector.points = [ Point(0, 0, 0), Point(resultant_vector[0][0], resultant_vector[0][1], 0) ]
+    
+    pub_resultant_vector.publish(resultant_vector)
 
 
 def calc_optimal_vel(obstacle_vector):
@@ -59,7 +80,9 @@ def get_odom_data(odom_data):
     global current_pose
     
     current_pose[0][0] = odom_data.pose.pose.position.x
-    current_pose[0][1] = odom_data.pose.pose.position.y 
+    current_pose[0][1] = odom_data.pose.pose.position.y
+
+    print("Current Odometry Pose: ", current_pose) 
 
 
 def get_checkpoints():
@@ -73,7 +96,7 @@ def get_checkpoints():
         for i, waypoint in enumerate(data):
             checkpoints[i] = waypoint.split()
 
-    print(checkpoints) 
+    print("Checkpoints: ", checkpoints) 
 
 
 def go_to_goal(current_goal_state):
@@ -83,7 +106,11 @@ def go_to_goal(current_goal_state):
 
     current_goal_vector = current_goal - current_pose
 
+    goal_arrrow_data(current_goal_vector)
+
     resultant_vector = current_goal_vector + current_obstacle_vector
+
+    resultant_arrow_data(resultant_vector)
 
     # transformation to v,w
     l_mat = np.array([[1, 0],
@@ -111,14 +138,14 @@ def go_to_goal(current_goal_state):
     twist.linear.x = vw_vector[0]
     twist.angular.z = vw_vector[1]
 
-    print(twist)
-    pub.publish(twist)
+    # print(twist)
+    pub.publish("Published Twist Message: ", twist)
 
     if np.linalg.norm(current_goal_vector) < 0.5:
         goal_state += 1
         pub.publish(Twist())
         rospy.sleep(10)
-        print(goal_state)
+        print("Current Goal State: ", goal_state)
 
 
 def Init():
@@ -132,6 +159,12 @@ def Init():
 
     # Publish angle and distance
     pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
+
+    # Publish angle and distance
+    pub_goal_vector = rospy.Publisher("/goal_vector", Marker, queue_size=10)
+
+    # Publish angle and distance
+    pub_resultant_vector = rospy.Publisher("/resultant_vector", Marker, queue_size=10)
 	
     # Subscribe to LIDAR scan topic /scan
     rospy.Subscriber("/obstacle_vector", Marker, calc_optimal_vel, queue_size=1)
