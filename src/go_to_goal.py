@@ -17,6 +17,8 @@ l = 0.15
 theta = 0
 
 current_pose = np.empty((1,2))
+current_obstacle_vector = np.empty((1,2))
+
 ###################################
 ## Function Declaration
 ###################################
@@ -24,7 +26,7 @@ def calc_optimal_vel(obstacle_vector):
 
     global current_obstacle_vector
 
-    current_obstacle_vector = obstacle_vector.points
+    current_obstacle_vector = obstacle_vector.points[1]
     
 
 def get_odom_data(odom_data):
