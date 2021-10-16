@@ -24,46 +24,46 @@ current_obstacle_vector = np.empty((1,2))
 ###################################
 def goal_arrow_data(goal_vector):
 
-    goal_vector = Marker()
-    goal_vector.action = Marker.ADD
-    goal_vector.header.frame_id = '/base_goal_vector'
-    goal_vector.header.stamp = rospy.Time.now()
-    goal_vector.ns = 'points_arrows'
-    goal_vector.id = 131
-    goal_vector.type = Marker.ARROW
-    goal_vector.pose.orientation.y = 0
-    goal_vector.pose.orientation.w = 1
-    goal_vector.scale = Vector3(0.1, 0.1, 0.1)
-    goal_vector.color.r = 0.2
-    goal_vector.color.g = 0.5
-    goal_vector.color.b = 1.0
-    goal_vector.color.a = 0.3
+    goal_marker = Marker()
+    goal_marker.action = Marker.ADD
+    goal_marker.header.frame_id = '/base_goal_vector'
+    goal_marker.header.stamp = rospy.Time.now()
+    goal_marker.ns = 'points_arrows'
+    goal_marker.id = 131
+    goal_marker.type = Marker.ARROW
+    goal_marker.pose.orientation.y = 0
+    goal_marker.pose.orientation.w = 1
+    goal_marker.scale = Vector3(0.1, 0.1, 0.1)
+    goal_marker.color.r = 0.2
+    goal_marker.color.g = 0.5
+    goal_marker.color.b = 1.0
+    goal_marker.color.a = 0.3
 
-    goal_vector.points = [ Point(0, 0, 0), Point(goal_vector[0][0], goal_vector[0][1], 0) ]
+    goal_marker.points = [ Point(0, 0, 0), Point(goal_vector[0][0], goal_vector[0][1], 0) ]
     
-    pub_goal_vector.publish(goal_vector)
+    pub_goal_vector.publish(goal_marker)
 
 
 def resultant_arrow_data(resultant_vector):
 
-    resultant_vector = Marker()
-    resultant_vector.action = Marker.ADD
-    resultant_vector.header.frame_id = '/base_resultant_vector'
-    resultant_vector.header.stamp = rospy.Time.now()
-    resultant_vector.ns = 'points_arrows'
-    resultant_vector.id = 111
-    resultant_vector.type = Marker.ARROW
-    resultant_vector.pose.orientation.y = 0
-    resultant_vector.pose.orientation.w = 1
-    resultant_vector.scale = Vector3(0.1, 0.1, 0.1)
-    resultant_vector.color.r = 0.2
-    resultant_vector.color.g = 0.5
-    resultant_vector.color.b = 1.0
-    resultant_vector.color.a = 0.3
+    resultant_marker = Marker()
+    resultant_marker.action = Marker.ADD
+    resultant_marker.header.frame_id = '/base_resultant_vector'
+    resultant_marker.header.stamp = rospy.Time.now()
+    resultant_marker.ns = 'points_arrows'
+    resultant_marker.id = 111
+    resultant_marker.type = Marker.ARROW
+    resultant_marker.pose.orientation.y = 0
+    resultant_marker.pose.orientation.w = 1
+    resultant_marker.scale = Vector3(0.1, 0.1, 0.1)
+    resultant_marker.color.r = 0.2
+    resultant_marker.color.g = 0.5
+    resultant_marker.color.b = 1.0
+    resultant_marker.color.a = 0.3
 
-    resultant_vector.points = [ Point(0, 0, 0), Point(resultant_vector[0][0], resultant_vector[0][1], 0) ]
+    resultant_marker.points = [ Point(0, 0, 0), Point(resultant_vector[0][0], resultant_vector[0][1], 0) ]
     
-    pub_resultant_vector.publish(resultant_vector)
+    pub_resultant_vector.publish(resultant_marker)
 
 
 def calc_optimal_vel(obstacle_vector):
@@ -106,7 +106,7 @@ def go_to_goal(current_goal_state):
 
     current_goal_vector = current_goal - current_pose
 
-    goal_arrrow_data(current_goal_vector)
+    goal_arrow_data(current_goal_vector)
 
     resultant_vector = current_goal_vector + current_obstacle_vector
 
