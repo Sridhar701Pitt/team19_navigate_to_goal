@@ -12,7 +12,7 @@ from visualization_msgs.msg import Marker
 ## VARIABLE DECLARATION AND SETUP
 ###################################
 
-max_dist_threshold = 1.0            # Segment out obstacles that are detected beyond 2 m as they create unnecessary computations for the planner
+max_dist_threshold = 1.0                        # Segment out obstacles that are detected beyond 2 m as they create unnecessary computations for the planner
 
 angles_array = np.arange(0,360)                 # Create the array with angles at each index for conversion from polar to cartesian (obstacle vectors)
 angles_array = angles_array * np.pi / 180.0                    # Convert values to radian
@@ -51,18 +51,11 @@ def compute_object_arrow(laser_scan_object):
     obstacle_vec_y = -1 * np.dot(scan_dist_threshold, sin_angles_array)
 
     print("obstacle_x : ", obstacle_vec_x, "     obstacle y : ", obstacle_vec_y)
-    
-    # obstacle_vec_theta = obstacle_vec_y / obstacle_vec_x
-    
+        
     obstacle_arrow = obstacle_arrow_data(obstacle_vec_x, obstacle_vec_y)
-
-    #obstacle_vector_tip = Point(obstacle_vec_x, obstacle_vec_y, 0)
-    #print(obstacle_vector_tip)
-    #pub.publish(obstacle_vector_tip)
     
     print(obstacle_arrow)
     pub.publish(obstacle_arrow)
-
 
 
 def Init():
