@@ -24,7 +24,7 @@ k_radial_factor = 9.21
 ###################################
 ## Function Declaration
 ###################################
-def obstacle_arrow_data(obstacle_vec_x, osbtacle_vec_y):
+def obstacle_arrow_data(obstacle_vec_x_dummy, osbtacle_vec_y_dummy):
 
     obstacle_marker = Marker()
     obstacle_marker.action = Marker.ADD
@@ -41,7 +41,7 @@ def obstacle_arrow_data(obstacle_vec_x, osbtacle_vec_y):
     obstacle_marker.color.b = 1.0
     obstacle_marker.color.a = 0.3
 
-    obstacle_marker.points = [ Point(0, 0, 0), Point(obstacle_vec_x, osbtacle_vec_y, 0) ]
+    obstacle_marker.points = [ Point(0, 0, 0), Point(obstacle_vec_x_dummy, osbtacle_vec_y_dummy, 0) ]
     return obstacle_marker
 
 
@@ -50,8 +50,8 @@ def compute_object_arrow(laser_scan_object):
     scan_dist_threshold = np.where(scan_object_ranges > max_dist_threshold, 0, scan_object_ranges)
 
     scan_dist_threshold = scan_dist_threshold * -1 * k_radial_factor
-    scan_dist_threshold = np.where(scan_dist_threshold == 0, 0, np.exp(scan_dist_threshold)
-
+    scan_dist_threshold = np.where(scan_dist_threshold == 0, 0, np.exp(scan_dist_threshold))
+    
     obstacle_vec_x = -1 * np.dot(scan_dist_threshold, cos_angles_array)
     obstacle_vec_y = -1 * np.dot(scan_dist_threshold, sin_angles_array)
 
@@ -59,8 +59,8 @@ def compute_object_arrow(laser_scan_object):
     #obstacle_vec_array = obstacle_vec_array / np.linalg.norm(obstacle_vec_array)
 
     print("obstacle_x : ", obstacle_vec_x, "     obstacle y : ", obstacle_vec_y)
-        
-    obstacle_arrow = obstacle_arrow_data(obstacle_vec_x, obstacle_vec_y)
+    
+    obstacle_arrow = obstacle_arrow_data(vec_x, vec_y)
 
     
     print(obstacle_arrow)
