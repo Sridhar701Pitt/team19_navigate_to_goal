@@ -149,7 +149,7 @@ def go_to_goal(current_goal_state):
 
 
 def Init():
-    global pub, goal_state
+    global pub, goal_state, pub_goal_vector, pub_resultant_vector
 
     get_checkpoints()
     
