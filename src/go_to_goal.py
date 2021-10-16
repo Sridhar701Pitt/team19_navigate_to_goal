@@ -138,8 +138,8 @@ def go_to_goal(current_goal_state):
     twist.linear.x = vw_vector[0]
     twist.angular.z = vw_vector[1]
 
-    # print(twist)
-    pub.publish("Published Twist Message: ", twist)
+    print("Published Twist Message: ", twist)
+    pub.publish(twist)
 
     if np.linalg.norm(current_goal_vector) < 0.5:
         goal_state += 1
