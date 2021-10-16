@@ -12,7 +12,7 @@ from visualization_msgs.msg import Marker
 ## VARIABLE DECLARATION AND SETUP
 ###################################
 
-max_dist_threshold = 2.0            # Segment out obstacles that are detected beyond 2 m as they create unnecessary computations for the planner
+max_dist_threshold = 1.0            # Segment out obstacles that are detected beyond 2 m as they create unnecessary computations for the planner
 
 angles_array = np.arange(0,360)                 # Create the array with angles at each index for conversion from polar to cartesian (obstacle vectors)
 angles_array = angles_array * np.pi / 180.0                    # Convert values to radian
