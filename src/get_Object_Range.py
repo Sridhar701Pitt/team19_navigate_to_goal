@@ -26,7 +26,7 @@ def obstacle_arrow_data(obstacle_vec_x, osbtacle_vec_y):
 
     obstacle_marker = Marker()
     obstacle_marker.action = Marker.ADD
-    obstacle_marker.header.frame_id = '/base_link'
+    obstacle_marker.header.frame_id = '/base_scan'
     obstacle_marker.header.stamp = rospy.Time.now()
     obstacle_marker.ns = 'points_arrows'
     obstacle_marker.id = 11311
