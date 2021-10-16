@@ -19,6 +19,8 @@ theta = 0
 current_pose = np.empty((1,2))
 current_obstacle_vector = np.empty((1,2))
 
+k_goal_factor = 2.0
+
 ###################################
 ## Function Declaration
 ###################################
@@ -106,6 +108,8 @@ def go_to_goal(current_goal_state):
 
     current_goal_vector = current_goal - current_pose
 
+    current_goal_vector = k_goal_factor * (current_goal_vector / np.linalg.norm(current_goal_vector))
+
     goal_arrow_data(current_goal_vector)
 
     resultant_vector = current_goal_vector + current_obstacle_vector
@@ -122,8 +126,8 @@ def go_to_goal(current_goal_state):
     rospy.loginfo('vw_vector is ${0}'.format(vw_vector))
 
     #robot maximum velocity limits
-    robot_max_linearx = 0.22
-    robot_max_rotz = 2.84
+    robot_max_linearx = 0.15
+    robot_max_rotz = 1.8
 
     #If the calculated velocities exceed the maximum velocity limits, normalize and scale the vw_vector to the limit.
     if np.abs(vw_vector[0]) > robot_max_linearx:
