@@ -16,7 +16,7 @@ from visualization_msgs.msg import Marker
 l = 0.15
 theta = 0
 
-current_pose = Point(0,0,0)
+current_pose = np.empty((1,2))
 ###################################
 ## Function Declaration
 ###################################
@@ -31,7 +31,6 @@ def get_odom_data(odom_data):
 
     global current_pose
     
-    current_pose = np.empty((1,2))
     current_pose[0] = odom_data.pose.pose.x
     current_pose[1] = odom_data.pose.pose.y
 
