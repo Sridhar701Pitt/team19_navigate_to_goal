@@ -8,10 +8,14 @@ from nav_msgs.msg import Odometry
 import numpy as np
 import math
 from visualization_msgs.msg import Marker, MarkerArray
+import os
 
 ###################################
 ## VARIABLE DECLARATION AND SETUP
 ###################################
+
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 marker_array = MarkerArray()
 visualize_Markers = True
@@ -39,6 +43,15 @@ max_obstacle_norm = 4.0
 ###################################
 ## Function Declaration
 ###################################
+def load_checkpoints():
+    global checkpoints 
+
+    checkpoints = np.empty((3,2))
+    with open(os.path.join(__location__, './wayPoints.txt'), 'r') as infile:
+        data = infile.readlines()
+        for i, waypoint in enumerate(data):
+            checkpoints[i] = waypoint.split()
+
 def define_vis_Markers(my_vector, rgb_vec, marker_count):
     global marker_array
 
@@ -109,16 +122,6 @@ def update_Odometry(Odom):
 
     # current_pose[0][0] = globalPos.x
     # current_pose[0][1] = globalPos.y
-
-def load_checkpoints():
-    global checkpoints 
-
-    checkpoints = np.empty((3,2))
-    with open('./wayPoints.txt', 'r') as infile:
-        data = infile.readlines()
-        for i, waypoint in enumerate(data):
-            checkpoints[i] = waypoint.split()
-
 
 def go_to_goal(goal_point):
     global marker_run_once

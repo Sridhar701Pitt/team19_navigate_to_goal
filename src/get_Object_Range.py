@@ -24,7 +24,7 @@ exp_factor = 0.4
 
 max_obstacle_norm = 4.0 # Will copy in go_to_goal
 
-visualize_markers = True
+visualize_markers = False
 
 ###################################
 ## Function Declaration
