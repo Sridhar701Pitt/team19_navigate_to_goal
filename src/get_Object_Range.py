@@ -24,8 +24,6 @@ exp_factor = 0.4
 
 max_obstacle_norm = 4.0 # Will copy in go_to_goal
 
-visualize_markers = False
-
 ###################################
 ## Function Declaration
 ###################################
@@ -67,8 +65,8 @@ def compute_object_arrow(laser_scan_object):
 
     print("obstacle_x : ", obstacle_vec_x, "     obstacle y : ", obstacle_vec_y)
     
-    if visualize_markers:
-        obstacle_marker_out = obstacle_arrow_data(obstacle_vec_array[0], obstacle_vec_array[1])
+
+    obstacle_marker_out = obstacle_arrow_data(obstacle_vec_array[0], obstacle_vec_array[1])
 
     pub.publish(obstacle_marker_out)
 
