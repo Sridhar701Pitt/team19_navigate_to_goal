@@ -18,7 +18,7 @@ __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 marker_array = MarkerArray()
-visualize_Markers = True
+visualize_Markers = False
 marker_run_once = True
 
 l = 0.05
@@ -232,7 +232,7 @@ def Init():
         go_to_goal(checkpoints[goal_index])
         rospy.sleep(0.25)
 
-    print(Yayyy!!!!)
+    print("Yayyy!!!!")
     rospy.sleep(5.0)
 
 
