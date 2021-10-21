@@ -1,0 +1,4 @@
+<launch>
+  <node name="get_object_range" pkg="team19_navigate_to_goal" type="get_Object_Range.py" output="screen"/>
+  <node name="go_to_goal" pkg="team19_navigate_to_goal" type="go_to_goal.py" output="screen"/>
+</launch>

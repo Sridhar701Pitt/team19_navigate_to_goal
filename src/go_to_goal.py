@@ -138,13 +138,15 @@ def go_to_goal(goal_point):
     obstacle_vector_t = [obstacle_vector[0][0],obstacle_vector[0][1]]
     current_goal_vector_t = [current_goal_vector[0][0],current_goal_vector[0][1]]
 
+    # If robot is between obstacle and goal, reduce the effect of obstacle vector, otherwise
+    # have the robot rotate around the obstacle, whose angle depends on the distance to the obstacle (+90 to 0 (go back) to -90)
     if np.sign(np.dot(obstacle_vector_t, current_goal_vector_t)) > 0.0:
         #diminish the effect of obstacle vector
         obstacle_vector = obstacle_vector/2.0
     else:
         #Add some angular shift          
         direction = np.sign(np.cross(np.array([obstacle_vector[0][0],obstacle_vector[0][1],0.0]),np.array([current_goal_vector[0][0],current_goal_vector[0][1],0.0]))[2])
-        heuristic_angle = 90*1*(max_obstacle_norm - np.linalg.norm(obstacle_vector))/max_obstacle_norm
+        heuristic_angle = 90*direction*(max_obstacle_norm - np.linalg.norm(obstacle_vector))/max_obstacle_norm
 
         rotation_offset = np.deg2rad(heuristic_angle)
         rot = np.array([[np.cos(rotation_offset), -np.sin(rotation_offset)], [np.sin(rotation_offset), np.cos(rotation_offset)]])
