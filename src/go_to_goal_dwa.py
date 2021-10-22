@@ -13,7 +13,7 @@ from visualization_msgs.msg import Marker
 ## DWA PARAMETERS
 ###################################
 
-HZ = 20
+HZ = 5
 ROBOT_FRAME = "base_link"
 
 TARGET_VELOCITY = 0.8       # Should depend on required velocity between final position of robot (in a simulated trajectory) and goal ---> large distance, high vel | small distance, low vel
@@ -103,8 +103,8 @@ def odom_callback(odom_data):
 
     global current_velocity, current_position, odom_updated
     
-    current_velocity = odom_data.twist
-    cuurent_position = odom_data.pose.pose.position
+    current_velocity = odom_data.twist.twist
+    current_position = odom_data.pose.pose.position
     odom_updated = True
 
 
@@ -155,7 +155,7 @@ def calc_to_goal_cost(trajectory, goal):
 
     last_position = np.array([trajectory[-1].x, trajectory[-1].y])
 
-    cost = np.linalg.norm(last_position, goal)
+    cost = np.linalg.norm(last_position - goal)
 
     return cost
 
@@ -198,22 +198,26 @@ def dwa_planning(dynamic_window, goal, obstacles_list):
     trajectories = list()
     best_trajectory = list()
 
-    for v in range(dynamic_window.min_velocity, dynamic_window.max_velocity, VELOCITY_RESOLUTION):
-        for y in range(dynamic_window.min_yawrate, dynamic_window.max_yawrate, YAWRATE_RESOLUTION):
+    for v in np.arange(dynamic_window.min_velocity, dynamic_window.max_velocity + VELOCITY_RESOLUTION, VELOCITY_RESOLUTION):
+        for y in np.arange(dynamic_window.min_yawrate, dynamic_window.max_yawrate + YAWRATE_RESOLUTION, YAWRATE_RESOLUTION):
+
+            print("\n Velocity Considered: ", v , ",", y)
 
             state = State(current_position.x, current_position.y, 0.0, current_velocity.linear.x, current_velocity.angular.z) # update with current position
 
             trajectory = list()
 
-            for t in range(0, PREDICT_TIME, DT):
+            for t in np.arange(0, PREDICT_TIME, DT):
                 motion(state, v, y)
                 trajectory.append(state)
+
+                print("\n Trajectory list: ", trajectory[0].x, trajectory[0].y)
             
             trajectories.append(trajectory)
 
             to_goal_cost = calc_to_goal_cost(trajectory, goal)
             speed_cost = calc_speed_cost(trajectory, TARGET_VELOCITY)
-            obstacle_cost = calc_obstacle_cost(trajectory, obs_list)
+            obstacle_cost = calc_obstacle_cost(trajectory, obstacles_list)
 
             # Add smoothing to the cost function and normalise the values to [0,1]
             # Add a term which minimises the amount of deviation from the previous v, w ---> for smoother trajectories and reduce jerks
@@ -227,14 +231,17 @@ def dwa_planning(dynamic_window, goal, obstacles_list):
                 min_cost = current_cost
                 best_trajectory.append(trajectory)
 
+    print("\n Current Position: ", current_position.x, current_position.y)
+
+
     print("\n Cost: ", min_cost)
     print("\n - Goal cost: ", min_goal_cost)
     print("\n - Obs cost: ", min_obs_cost)
     print("\n - Speed cost: ", min_speed_cost)
     print("\n num of trajectories: ", len(trajectories))
     
-    if min_cost == -1:
-        trajectory = State(0,0, 0.0, 0.0, current_velocity.linear.x, current_velocity.angular.z)
+    if min_cost == 1e6:
+        trajectory = State(0.0, 0.0, 0.0, current_velocity.linear.x, current_velocity.angular.z)
         best_trajectory.append(trajectory)
     
     return best_trajectory[-1]
@@ -262,11 +269,11 @@ def visualise_trajectory(trajectory, r, g, b, pub):
 
     traj_point = Point()
     for pose in trajectory:
-        traj_point.x = traj_pose.x
-        traj_point.y = traj_pose.y
+        traj_point.x = traj_pose.position.x
+        traj_point.y = traj_pose.position.y
         vis_trajectory.points.append(traj_point)
     
-    pub.publisher(vis_trajectory)
+    pub.publish(vis_trajectory)
 
 
 ###################################
@@ -274,6 +281,10 @@ def visualise_trajectory(trajectory, r, g, b, pub):
 ###################################
 
 def Init():
+
+    global scan_updated, odom_updated
+    scan_updated = False
+    odom_updated = False
 
     goals = get_checkpoints()
         
@@ -298,10 +309,10 @@ def Init():
         if scan_updated == True and goal_subscribed == True and odom_updated == True:
             dynamic_window = calc_dynamic_window(current_velocity)
 
-            goal = goal[0]
+            goal = goals[0]
             print("\n Goal Coordinates: ", goal[0], ",", goal[1])
 
-            if linalg.norm(goal) > GOAL_THRESHOLD:
+            if np.linalg.norm(goal) > GOAL_THRESHOLD:
                 obstacles_list = scan_to_obs()
                 scan_updated = False
             
@@ -322,7 +333,7 @@ def Init():
             odom_updated = False
 
         else:
-            
+            '''
             if scan_updated == False:
                 print("\n Scan not updated")
             
@@ -330,7 +341,7 @@ def Init():
                 print("\n Goal not received")
             
             if odom_updated == False:
-                print("\n Odom not updated")
+                print("\n Odom not updated")'''
 
     rospy.spin()
 
