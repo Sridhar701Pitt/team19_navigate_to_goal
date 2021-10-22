@@ -145,7 +145,7 @@ def go_to_goal(goal_point):
         obstacle_vector = obstacle_vector/2.0
     else:
         #Add some angular shift          
-        direction = np.sign(np.cross(np.array([obstacle_vector[0][0],obstacle_vector[0][1],0.0]),np.array([current_goal_vector[0][0],current_goal_vector[0][1],0.0]))[2])
+        #direction = np.sign(np.cross(np.array([obstacle_vector[0][0],obstacle_vector[0][1],0.0]),np.array([current_goal_vector[0][0],current_goal_vector[0][1],0.0]))[2])
         heuristic_angle = 90*1*(max_obstacle_norm - np.linalg.norm(obstacle_vector))/max_obstacle_norm
 
         rotation_offset = np.deg2rad(heuristic_angle)
